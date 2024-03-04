@@ -1,26 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <v-app>
+    <SideBar />
+    <v-main>
+      <v-container>
+        <OrderHistory />
+        <v-row>
+          <v-col cols="10"><MenuItem /></v-col>
+          <v-col cols="2" class="cart"><CartItem /></v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import SideBar from "./components/SideBar";
+import MenuItem from "./components/MenuItem";
+import CartItem from "./components/CartItem";
+import OrderHistory from "./components/OrderHistory.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    MenuItem,
+    SideBar,
+    CartItem,
+    OrderHistory,
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.cart{
+  background-color: #f4f5ed;
 }
-</style>
+</style>./components/SearchItem.vue
