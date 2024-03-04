@@ -8,7 +8,7 @@
         md="4"
         lg="3"
       >
-        <v-card class="mx-auto bg-light-yellow p-10" max-width="250" max-height="350">
+        <v-card class="mx-auto " max-width="250" max-height="350">
           <v-img :src="item.thumbnail" class="white--text align-end" width="250" height="150"></v-img>
           <v-card-title>{{ item.title }}</v-card-title>
           <v-card-subtitle>

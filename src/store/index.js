@@ -24,10 +24,9 @@ const store = createStore({
     actions: {
         async getProducts({ commit }) {
             try {
-                const response = await fetch('https://dummyjson.com/products/');
-    const data = await response.json(); // Mengekstrak data JSON dari respons
-    commit("setProducts", data.products); // Menyimpan data produk ke Vuex state
-    console.log(data); // Melihat data respons
+                const response = await axios.get('https://dummyjson.com/products/');
+                commit("setProducts", response.data.products);
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -57,7 +56,7 @@ const store = createStore({
                     price: item.price,
                     qty: item.qty
                 }));
-                
+                const totalPrice = orderItems.reduce((total, item) => total + item.qty * item.price, 0);
                 const order = {
                     orderNumber,
                     items: orderItems,

@@ -2,13 +2,14 @@
   <v-app>
     <SideBar />
     <v-main>
-      <v-container>
-        <OrderHistory />
+      <div class="menu-item">
+       
         <v-row>
-          <v-col cols="10"><MenuItem /></v-col>
-          <v-col cols="2" class="cart"><CartItem /></v-col>
+          <v-col cols="8" class="bg-light-yellow"><MenuItem /></v-col>
+          <v-col cols="2" class="bg-light-yellow"><CartItem /></v-col>
+          <v-col cols="2" class="bg-light-yellow"> <OrderHistory /></v-col>
         </v-row>
-      </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -30,7 +31,10 @@ export default {
 </script>
 
 <style>
-.cart{
+.bg-light-yellow{
   background-color: #f4f5ed;
+}
+.menu-item{
+  margin: 20px;
 }
 </style>./components/SearchItem.vue
