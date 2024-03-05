@@ -8,12 +8,11 @@ const store = createStore({
             products: [],
             cart: [],
             orderHistory: JSON.parse(localStorage.getItem('orderHistory')) || [], // Load riwayat pesanan dari localStorage// Tambah state baru untuk menyimpan riwayat pesanan
-            lastOrderNumber: 0, // Menyimpan nomor pesanan terakhir
             showOrderSuccessModal: false, // Menampilkan modal saat pesanan berhasil
             isProcessingOrder: false, // Menampilkan proses pesananUntuk menyimpan nomor pesanan terakhir
         };
     },
-    
+    //getter ini dpake untuk ambil data from state
     getters: {
         products: (state) => state.products,
         cart: (state) => state.cart,
@@ -29,15 +28,6 @@ const store = createStore({
                 console.log(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
-            }
-        },
-        async searchProducts({ commit }, query) {
-            try {
-                const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
-                commit("setProducts", response.data.products);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error searching products:', error);
             }
         },
         async placeOrder({ commit, state }) {
@@ -60,19 +50,19 @@ const store = createStore({
                 const order = {
                     orderNumber,
                     items: orderItems,
-                    totalPrice
+                    totalPrice,
                 };
 
-                // Simpan pesanan ke riwayat pesanan
+                // commit disini utk simpen data ke saveOrderToHistory yg dimutation
                 commit('saveOrderToHistory', order);
 
-                // Simpan riwayat pesanan ke localStorage
+                //pakai stringify karena pakai penyimpanan local untuk item2 yang udah diorder
                 localStorage.setItem('orderHistory', JSON.stringify(state.orderHistory));
 
-                // Setelah pesanan berhasil diproses, kosongkan keranjang
+                // kl udh berhasil checkout nanti cartnya direset
                 commit('emptyCart');
 
-                // Tampilkan modal pesanan berhasil
+                
                 commit('showOrderSuccessModal', true);
             } catch (error) {
                 console.error('Error placing order:', error);
@@ -92,7 +82,7 @@ const store = createStore({
         },
         emptyCart({ commit }) {
             commit("emptyCart");
-        }
+        },
     },
     mutations: {
         setProducts(state, products) {
@@ -126,9 +116,6 @@ const store = createStore({
         },
         saveOrderToHistory(state, order) {
             state.orderHistory.push(order);
-        },
-        showOrderSuccessModal(state, value) {
-            state.showOrderSuccessModal = value;
         },
     }
 });

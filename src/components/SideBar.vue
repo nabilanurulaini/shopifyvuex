@@ -20,6 +20,7 @@
         prepend-icon="mdi-history"
         title="Order History"
         value="history"
+        href="#order-history-section"
       ></VListItem>
     </VList>
   </v-navigation-drawer>

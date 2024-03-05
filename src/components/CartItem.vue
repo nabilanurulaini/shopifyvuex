@@ -1,9 +1,12 @@
 <template>
   <v-card class="cart">
-    <v-card-title>Cart {{ totalQty }}</v-card-title>
+    <v-card-title v-if="!cart.length">Cart</v-card-title>
+    <v-card-title v-else>
+    Total in Cart : {{ totalQty }}  
+    </v-card-title>
     <v-divider></v-divider>
     <v-card-text v-if="!cart.length">No Product in cart!</v-card-text>
-    <v-list>
+    <v-list >
       <!-- Daftar item dalam keranjang -->
       <v-list-item v-for="item in cart" :key="item.id">
         <!-- Konten item dalam keranjang -->
@@ -11,22 +14,21 @@
           <v-img :src="item.thumbnail" class="white--text align-end" height="100"></v-img>
           <v-list-item-title>{{ item.title }}</v-list-item-title>
           <v-list-item-subtitle>Rp {{ item.price }}</v-list-item-subtitle>
-          <v-list-item-subtitle>
+          <v-list-item-subtitle>Quantity: {{ item.qty }}</v-list-item-subtitle>
+          <v-list-item-subtitle>Rp {{ item.qty * item.price }}</v-list-item-subtitle>
+          <v-list-item-subtitle style="padding-bottom:20px">
             <v-btn icon @click="reduceQty(item.id)">-</v-btn>
             <v-text>{{ item.qty }}</v-text>
             <v-btn icon @click="addQty(item.id)">+</v-btn>
           </v-list-item-subtitle>
-          <v-spacer></v-spacer>
-          <v-divider></v-divider>
+          <v-divider ></v-divider>
         </v-list-item-content>
       </v-list-item>
     </v-list>
     <!-- Tombol "Place Order" -->
     <v-btn v-if="cart.length" @click="placeOrder" color="error" block>
-      <span v-if="isProcessing">
-        <v-progress-circular indeterminate color="white"></v-progress-circular>
-      </span>
-      <span v-else>Checkout (Rp {{ totalPrice.toLocaleString() }})</span>
+    
+      <span>Checkout (Rp {{ totalPrice.toLocaleString() }})</span>
     </v-btn>
   </v-card>
 </template>
@@ -36,12 +38,11 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "CartItem",
-  data() {
-    return {
-      isProcessing: false,
-      orderPlaced: false,
-    };
-  },
+  // data() {
+  //   return {
+  //     isProcessing: false,
+  //   };
+  // },
   computed: {
     ...mapGetters(["cart", "orderHistory"]),
 
@@ -60,18 +61,6 @@ export default {
       "emptyCart",
       "placeOrder",
     ]),
-    async placeOrder() {
-      this.isProcessing = true;
-      try {
-        await this.$store.dispatch("placeOrder");
-        this.orderPlaced = true;
-        this.$router.push("/order-history");
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.isProcessing = false;
-      }
-    },
   },
 };
 </script>
@@ -79,5 +68,8 @@ export default {
 <style scoped>
 .cart {
   text-align: center;
+}
+.divider{
+  margin-bottom: 100px;
 }
 </style>
