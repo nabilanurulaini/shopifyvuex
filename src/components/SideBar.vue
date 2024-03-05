@@ -12,14 +12,12 @@
     </VList>
     <v-divider></v-divider>
     <VList density="compact" nav>
-      <VListItem prepend-icon="mdi-home" title="Home" value="home"></VListItem>
-      <!-- tambahkan mengarah ke halaman detail selain dengan href-->
-      <v-list-item to="/DetailItem" >Detail</v-list-item>
-
+      <VListItem prepend-icon="mdi-home" title="Home" value="home" to="/"></VListItem>
+      <!-- Navigasi DetailItem -->
+      <VListItem to="/DetailItem">Detail</VListItem>
 
       <VListItem prepend-icon="mdi-cart" title="Cart" value="cart">
-        {{ totalQty }}</VListItem
-      >
+        {{ totalQty }}</VListItem>
       <VListItem
         prepend-icon="mdi-history"
         title="Order History"
@@ -29,14 +27,15 @@
     </VList>
   </v-navigation-drawer>
 </template>
+
 <script setup>
 import { mapGetters } from "vuex";
 </script>
+
 <script>
 export default {
   name: "SideBar",
   computed: {
-    // disini mapGetters(['totalQty']) adalah cara untuk mengambil data dari store, seperti spread element di react
     ...mapGetters(["totalQty"]),
     totalQty() {
       return this.$store.getters.totalQty;

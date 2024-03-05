@@ -1,10 +1,13 @@
 <template>
   <v-app>
+    
+    
     <SideBar />
     <v-main>
       <div class="menu-item">
        
         <v-row>
+         
           <v-col cols="8" class="bg-light-yellow"><MenuItem /></v-col>
           <v-col cols="2" class="bg-light-yellow"><CartItem /></v-col>
           <v-col cols="2" class="bg-light-yellow"> <OrderHistory /></v-col>
@@ -12,7 +15,6 @@
       </div>
     </v-main>
     
-  </router-view> />
   </v-app>
 </template>
 
@@ -25,8 +27,8 @@ import OrderHistory from "./components/OrderHistory.vue";
 export default {
   name: "App",
   components: {
-    MenuItem,
     SideBar,
+    MenuItem,
     CartItem,
     OrderHistory,
   },
@@ -40,4 +42,4 @@ export default {
 .menu-item{
   margin: 20px;
 }
-</style>./components/SearchItem.vue
+</style>

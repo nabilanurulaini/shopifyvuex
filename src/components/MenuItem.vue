@@ -32,7 +32,7 @@
             height="120"
           ></v-img>
           <v-card-title>{{ item.title }}</v-card-title>
-          <router-link to="/DetailItem">Detail</router-link>
+          
           <v-card-subtitle>
             <v-icon color="yellow">mdi-star</v-icon>
             {{ item.rating }}

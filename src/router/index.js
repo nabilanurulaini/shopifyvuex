@@ -1,17 +1,21 @@
+// router.js
 import { createRouter, createWebHistory } from 'vue-router'; 
+import DetailItem from '../components/DetailItem.vue';
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/DetailItem', 
-      name: 'DetailItem',
-      mode: 'history',
-      base: process.env.BASE_URL,
-      component:()=> import('../components/DetailItem.vue')
+      path: '/',
+      name: 'Home',
+      component: () => import('../App.vue'),
     },
     {
-
-    }
+      path: '/DetailItem', 
+      name: 'DetailItem',
+      component: DetailItem
+    },
+    // Definisi rute lainnya jika diperlukan
   ],
 });
 
