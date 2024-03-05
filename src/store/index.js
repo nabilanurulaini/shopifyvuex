@@ -8,7 +8,7 @@ const store = createStore({
             products: [],
             cart: [],
             orderHistory: JSON.parse(localStorage.getItem('orderHistory')) || [], // Load riwayat pesanan dari localStorage// Tambah state baru untuk menyimpan riwayat pesanan
-            showOrderSuccessModal: false, // Menampilkan modal saat pesanan berhasil
+
             isProcessingOrder: false, // Menampilkan proses pesananUntuk menyimpan nomor pesanan terakhir
         };
     },
@@ -17,7 +17,6 @@ const store = createStore({
         products: (state) => state.products,
         cart: (state) => state.cart,
         orderHistory: (state) => state.orderHistory,
-        showOrderSuccessModal: (state) => state.showOrderSuccessModal,
         isProcessingOrder: (state) => state.isProcessingOrder,
     },
     actions: {
@@ -38,7 +37,6 @@ const store = createStore({
                 const randomNumbers = Math.floor(Math.random() * 1000) + 1;
                 // Gabungkan tanggal, waktu, dan angka random
                 const orderNumber = `${now}-${randomNumbers}`;
-
                 // Dapatkan item-item yang ada di keranjang dengan jumlah > 0
                 const orderItems = state.cart.filter((item) => item.qty > 0).map((item) => ({
                     id: item.id,
@@ -52,21 +50,28 @@ const store = createStore({
                     items: orderItems,
                     totalPrice,
                 };
-
+                this.confirmCheckoutDialog = true;
                 // commit disini utk simpen data ke saveOrderToHistory yg dimutation
                 commit('saveOrderToHistory', order);
-
                 //pakai stringify karena pakai penyimpanan local untuk item2 yang udah diorder
                 localStorage.setItem('orderHistory', JSON.stringify(state.orderHistory));
-
                 // kl udh berhasil checkout nanti cartnya direset
                 commit('emptyCart');
-
-                
-                commit('showOrderSuccessModal', true);
             } catch (error) {
                 console.error('Error placing order:', error);
             }
+        },
+        async searchProducts({ commit }, query) {
+            try {
+                const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
+                commit("setProducts", response.data.products);
+            } catch (error) {
+                console.error('Error searching products:', error);
+            }
+        },
+        async checkout({ commit }) {
+            commit('emptyCart');
+            commit('', true);
         },
         addItemToCart({ commit }, item) {
             commit("addToCart", item);
@@ -84,6 +89,7 @@ const store = createStore({
             commit("emptyCart");
         },
     },
+    // mutation gunanya miripdg useeffect di react, buat merubah state (nilainya ganti2)
     mutations: {
         setProducts(state, products) {
             state.products = products;
@@ -111,6 +117,7 @@ const store = createStore({
                 state.cart.splice(state.cart.indexOf(productInCart), 1);
             }
         },
+        //kl abis checkout keranjangnya nu;;
         emptyCart(state) {
             state.cart = [];
         },

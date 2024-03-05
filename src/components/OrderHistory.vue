@@ -4,48 +4,32 @@
       <div class="order-history">
         <v-card-title>Order History</v-card-title>
         <v-divider></v-divider>
-        <v-card-text v-if="orderHistory.length === 0">No Order History Yet!</v-card-text>
+        <v-card-text v-if="paginatedOrders.length === 0">No Order History Yet!</v-card-text>
       </div>
       <v-card-text>
         <v-list>
           <v-list-item-group>
-            <v-list-item v-for="order in orderHistory" :key="order.orderNumber" to="/order-history">
+            <v-list-item v-for="order in paginatedOrders" :key="order.orderNumber" to="/order-history">
               <v-list-item-content>
                 <v-list-item-title>Order Number: {{ order.orderNumber }}</v-list-item-title>
                 <v-list-item-subtitle>
                   <v-list-item v-for="item in order.items" :key="item.id">
-                    {{ item.title }} - Quantity: {{ item.qty }} : Rp {{ item.qty * item.price.toLocaleString()}}
+                    {{ item.title }} <br/> Quantity: {{ item.qty }} : {{ item.price * item.qty }}
                   </v-list-item>
                   <v-list-item class="font-weight-bold">Total: Rp {{ order.totalPrice.toLocaleString() }}</v-list-item>
                 </v-list-item-subtitle>
               </v-list-item-content>
-
               <v-divider></v-divider>
             </v-list-item>
-
           </v-list-item-group>
         </v-list>
       </v-card-text>
+      <v-pagination
+        v-model="currentPage"
+        :length="numberOfPages"
+        @input="changePage"
+      ></v-pagination>
     </v-card>
-    <!--   
-      <h2>Order History</h2>
-      <div v-if="orderHistory.length === 0">
-        <p>No order history</p>
-      </div>
-      <ul v-else>
-        <li v-for="order in orderHistory" :key="order.orderNumber">
-          <h3>Order Number: {{ order.orderNumber }}</h3>
-          <ul>
-            <li v-for="item in order.items" :key="item.id">
-
-              {{ item.title }} - Quantity: {{ item.qty }}
-            </li>
-            <li>
-                Total: Rp {{ order.totalPrice.toLocaleString() }}
-            </li>
-          </ul>
-        </li>
-      </ul> -->
   </div>
 </template>
 
@@ -55,6 +39,24 @@ import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters(['orderHistory']),
+    numberOfPages() {
+      return Math.ceil(this.orderHistory.length / 4); // Menyesuaikan dengan jumlah maksimum order per halaman
+    },
+    paginatedOrders() {
+      const startIndex = (this.currentPage - 1) * 4; // Menggunakan angka 5 untuk menentukan jumlah order per halaman
+      const endIndex = startIndex + 4;
+      return this.orderHistory.slice(startIndex, endIndex);
+    },
+  },
+  data() {
+    return {
+      currentPage: 1,
+    };
+  },
+  methods: {
+    changePage(page) {
+      this.currentPage = page;
+    },
   },
 };
 </script>
