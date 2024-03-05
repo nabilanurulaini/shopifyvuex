@@ -16,7 +16,7 @@
                   <v-list-item v-for="item in order.items" :key="item.id">
                     {{ item.title }} <br/> Quantity: {{ item.qty }} : {{ item.price * item.qty }}
                   </v-list-item>
-                  <v-list-item class="font-weight-bold">Total: Rp {{ order.totalPrice.toLocaleString() }}</v-list-item>
+                  <v-list-item class="font-weight-bold">Total: Rp {{ order.totalPrice }}</v-list-item>
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-divider></v-divider>

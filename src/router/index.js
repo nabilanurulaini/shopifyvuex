@@ -1,16 +1,18 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import DetailItem from '../components/DetailItem.vue';
+import { createRouter, createWebHistory } from 'vue-router'; 
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/DetailItem', 
+      name: 'DetailItem',
+      mode: 'history',
+      base: process.env.BASE_URL,
+      component:()=> import('../components/DetailItem.vue')
+    },
+    {
 
-Vue.use(Router);
-export default new Router({
-    mode: 'history',
-    routes: [
-        {
-            path: '/products/:id',
-            name: 'detail',
-            component: DetailItem,
-            props: true,
-        },
-    ],
+    }
+  ],
 });
+
+export default router;

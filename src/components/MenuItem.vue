@@ -5,7 +5,16 @@
       class="search-item"
       label="Search"
       @input="handleSearch"
+      append-icon="mdi-magnify"
+      @click:append="handleSearch"
     ></v-text-field>
+    <!-- untuk categories -->
+    <v-select
+      v-model="selectedCategory"
+      :items="categories"
+      label="Category"
+      @change="handleCategory"
+    ></v-select>
     <v-row>
       <v-col
         v-for="(item, index) in paginatedItems"
@@ -23,6 +32,7 @@
             height="120"
           ></v-img>
           <v-card-title>{{ item.title }}</v-card-title>
+          <router-link to="/DetailItem">Detail</router-link>
           <v-card-subtitle>
             <v-icon color="yellow">mdi-star</v-icon>
             {{ item.rating }}
@@ -55,27 +65,39 @@ export default {
       currentPage: 1,
       itemsPerPage: 8,
       searchQuery: "",
+      selectedCategory: "",
     };
   },
-   // mounted buat manggil semua getproduct yg mana getproduct itu buat get data dari api
+  // mounted buat manggil semua getproduct yg mana getproduct itu buat get data dari api
   // mounted adalah yg diload paling awal
   mounted() {
     this.getProducts();
+    this.getCategories();
   },
   computed: {
-    ...mapGetters(["products"]),
+    ...mapGetters(["products", "categories"]),
     // ini buat itung jumlah halaman menurut jumlah item dan item per halaman disini dibuat max 8 
     numberOfPages() {
-      return Math.ceil(this.products.length / this.itemsPerPage);
+      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
     },
     paginatedItems() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.products.slice(startIndex, endIndex);
+      //kl mau ga show product sesuai product tinggal diganti jaid this.products
+      return this.filteredItems.slice(startIndex, endIndex);
+    },
+    filteredItems() {
+      if (this.selectedCategory) {
+        return this.products.filter(
+          (product) => product.category === this.selectedCategory
+        );
+      } else {
+        return this.products;
+      }
     },
   },
   methods: {
-    ...mapActions(["addItemToCart", "getProducts"]),
+    ...mapActions(["addItemToCart", "getProducts", "getCategories"]),
     // Fungsi untuk mengubah halaman saat pengguna mengklik pagination
     changePage(page) {
       this.currentPage = page;
@@ -83,6 +105,10 @@ export default {
     handleSearch() {
       //kl ga dikasih dispatch dia panggil dirinya sendiri jadi maximum
       this.$store.dispatch("searchProducts", this.searchQuery);
+    },
+    handleCategory() {
+      // Trigger perubahan kategori untuk memperbarui halaman
+      this.currentPage = 1;
     },
   },
 };

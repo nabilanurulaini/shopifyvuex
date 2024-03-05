@@ -7,28 +7,38 @@ const store = createStore({
         return {
             products: [],
             cart: [],
+            categories: [],
             orderHistory: JSON.parse(localStorage.getItem('orderHistory')) || [], // Load riwayat pesanan dari localStorage// Tambah state baru untuk menyimpan riwayat pesanan
-
-            isProcessingOrder: false, // Menampilkan proses pesananUntuk menyimpan nomor pesanan terakhir
+           
         };
     },
     //getter ini dpake untuk ambil data from state
     getters: {
         products: (state) => state.products,
         cart: (state) => state.cart,
+        categories: (state) => state.categories,
         orderHistory: (state) => state.orderHistory,
-        isProcessingOrder: (state) => state.isProcessingOrder,
     },
     actions: {
         async getProducts({ commit }) {
             try {
                 const response = await axios.get('https://dummyjson.com/products/');
                 commit("setProducts", response.data.products);
+                // console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        },
+        async getCategories({ commit }) {
+            try {
+                const response = await axios.get('https://dummyjson.com/products/categories/');
+                commit("setCategories", response.data);
                 console.log(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
         },
+        
         async placeOrder({ commit, state }) {
             try {
                 // Buat format tanggal dan waktu saat ini
@@ -93,6 +103,9 @@ const store = createStore({
     mutations: {
         setProducts(state, products) {
             state.products = products;
+        },
+        setCategories(state, categories) {
+            state.categories = categories;
         },
         addToCart(state, item) {
             const productInCart = state.cart.find((product) => product.id === item.id);

@@ -11,6 +11,8 @@
         </v-row>
       </div>
     </v-main>
+    
+  </router-view> />
   </v-app>
 </template>
 
@@ -19,6 +21,7 @@ import SideBar from "./components/SideBar";
 import MenuItem from "./components/MenuItem";
 import CartItem from "./components/CartItem";
 import OrderHistory from "./components/OrderHistory.vue";
+
 export default {
   name: "App",
   components: {

@@ -31,10 +31,8 @@
       color="error"
       block
     >
-      <span v-if="isProcessing">
-        <v-progress-circular indeterminate color="white"></v-progress-circular>
-      </span>
-      <span v-else>Checkout (Rp {{ totalPrice.toLocaleString() }})</span>
+      
+      <span >Checkout (Rp {{ totalPrice }})</span>
     </v-btn>
     <v-dialog v-model="confirmCheckoutDialog" max-width="400">
       <v-card>

@@ -13,6 +13,10 @@
     <v-divider></v-divider>
     <VList density="compact" nav>
       <VListItem prepend-icon="mdi-home" title="Home" value="home"></VListItem>
+      <!-- tambahkan mengarah ke halaman detail selain dengan href-->
+      <v-list-item to="/DetailItem" >Detail</v-list-item>
+
+
       <VListItem prepend-icon="mdi-cart" title="Cart" value="cart">
         {{ totalQty }}</VListItem
       >
