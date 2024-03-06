@@ -15,6 +15,7 @@ const router = createRouter({
       name: 'DetailItem',
       component: DetailItem
     },
+    
     // Definisi rute lainnya jika diperlukan
   ],
 });

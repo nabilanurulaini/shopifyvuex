@@ -8,7 +8,6 @@
       append-icon="mdi-magnify"
       @click:append="handleSearch"
     ></v-text-field>
-    <!-- untuk categories -->
     <v-select
       v-model="selectedCategory"
       :items="categories"
@@ -24,15 +23,26 @@
         md="4"
         lg="3"
       >
-        <v-card class="mx-auto" max-width="250" max-height="320" to="/detail">
+        <v-card class="mx-auto" max-width="250" max-height="320">
           <v-img
             :src="item.thumbnail"
             class="white--text align-end"
             width="250"
             height="120"
           ></v-img>
-          <v-card-title>{{ item.title }}</v-card-title>
-          
+          <!-- Gunakan v-if untuk menampilkan v-text-field saat produk dalam mode edit -->
+          <v-text-field
+            v-if="item.editMode"
+            v-model="item.title"
+            label="Product Title"
+            outlined
+            dense
+            @keyup.enter="saveProductChanges(item)"
+          ></v-text-field>
+          <!-- Gunakan v-else untuk menampilkan judul produk saat ini -->
+          <v-card-title v-else @click="toggleEditMode(item)">
+            {{ item.title }}
+          </v-card-title>
           <v-card-subtitle>
             <v-icon color="yellow">mdi-star</v-icon>
             {{ item.rating }}
@@ -42,11 +52,14 @@
             <v-btn @click="addItemToCart(item)"
               ><v-icon color="green">mdi-cart</v-icon> Add to cart
             </v-btn>
+            <!-- Tombol Edit -->
+            <v-btn @click="toggleEditMode(item)"
+              ><v-icon color="blue">mdi-pencil</v-icon> Edit
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-    <!-- Tambahkan komponen pagination di sini -->
     <v-pagination
       v-model="currentPage"
       :length="numberOfPages"
@@ -83,7 +96,8 @@ export default {
     paginatedItems() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      //kl mau ga show product sesuai product tinggal diganti jaid this.products
+       //kl mau ga show product sesuai product tinggal diganti jadi this.products
+      
       return this.filteredItems.slice(startIndex, endIndex);
     },
     filteredItems() {
@@ -98,17 +112,26 @@ export default {
   },
   methods: {
     ...mapActions(["addItemToCart", "getProducts", "getCategories"]),
-    // Fungsi untuk mengubah halaman saat pengguna mengklik pagination
     changePage(page) {
       this.currentPage = page;
     },
     handleSearch() {
-      //kl ga dikasih dispatch dia panggil dirinya sendiri jadi maximum
       this.$store.dispatch("searchProducts", this.searchQuery);
     },
     handleCategory() {
-      // Trigger perubahan kategori untuk memperbarui halaman
       this.currentPage = 1;
+    },
+    toggleEditMode(item) {
+      // Mengaktifkan atau menonaktifkan mode edit untuk produk tertentu
+      item.editMode = !item.editMode;
+    },
+    saveProductChanges(item) {
+      // Simpan perubahan judul produk ke server atau penyimpanan lainnya
+      // Di sini, Anda akan menyimpannya ke server menggunakan Vuex action atau menggunakan Axios langsung
+      // Anda dapat menambahkan logika penyimpanan perubahan di sini
+      console.log("Saved changes for product:", item);
+      // Matikan mode edit setelah menyimpan perubahan
+      item.editMode = false;
     },
   },
 };

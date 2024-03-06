@@ -38,6 +38,15 @@ const store = createStore({
                 console.error('Error fetching products:', error);
             }
         },
+        async updateProduct({ commit }, productData) {
+            try {
+                const response = await axios.put(`https://dummyjson.com/products/${productData.id}`, productData);
+                commit("updateProduct", response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error updating product:', error);
+            }
+        },
         
         async placeOrder({ commit, state }) {
             try {
@@ -106,6 +115,13 @@ const store = createStore({
         },
         setCategories(state, categories) {
             state.categories = categories;
+        },
+        updateProduct(state, updatedProduct) {
+            const index = state.products.findIndex((product) => product.id === updatedProduct.id);
+            if (index !== -1) {
+                
+                state.products.splice(index, 1, updatedProduct);
+            }
         },
         addToCart(state, item) {
             const productInCart = state.cart.find((product) => product.id === item.id);
