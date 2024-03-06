@@ -83,6 +83,7 @@ export default {
       this.confirmCheckoutDialog = false;
       //kalo this.placeorder nanti loop infinity
       this.$store.dispatch("placeOrder");
+      this.emptyCart();
     },
     cancelCheckout() {
       this.confirmCheckoutDialog = false; // Jika pengguna cancel checkout,  dialog false

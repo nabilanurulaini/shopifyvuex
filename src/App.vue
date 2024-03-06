@@ -1,43 +1,30 @@
 <template>
   <v-app>
     
-    
-    <SideBar />
-    <v-main>
-      <div class="menu-item">
-       
-        <v-row>
-         
-          <v-col cols="8" class="bg-light-yellow"><MenuItem /></v-col>
-          <v-col cols="2" class="bg-light-yellow"><CartItem /></v-col>
-          <v-col cols="2" class="bg-light-yellow"> <OrderHistory /></v-col>
-        </v-row>
-      </div>
+    <v-main class="bg-light-yellow">
+      
+    <SideBar/>
+    <router-view/>  
+      
     </v-main>
     
   </v-app>
 </template>
 
 <script>
-import SideBar from "./components/SideBar";
-import MenuItem from "./components/MenuItem";
-import CartItem from "./components/CartItem";
-import OrderHistory from "./components/OrderHistory.vue";
-
+import SideBar from "./components/SideBar.vue";
 export default {
   name: "App",
   components: {
-    SideBar,
-    MenuItem,
-    CartItem,
-    OrderHistory,
+    SideBar
   },
+
 };
 </script>
 
 <style>
 .bg-light-yellow{
-  background-color: #f4f5ed;
+  background-color: #ECECEC;
 }
 .menu-item{
   margin: 20px;

@@ -1,6 +1,6 @@
 <template>
-    Halaman Detail
-    
+    <v-card>Halaman Detail
+    </v-card>    
 </template>
 
 <script>

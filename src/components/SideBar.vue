@@ -1,31 +1,30 @@
 <template>
-  <v-navigation-drawer expand-on-hover rail>
-    <VList>
-      <div class="pt-5">
-        <VListItem
-          prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-          title="Nabila Nurul Aini"
-          subtitle="nabilaaini18@gmail.com"
-        >
-        </VListItem>
-      </div>
-    </VList>
-    <v-divider></v-divider>
-    <VList density="compact" nav>
-      <VListItem prepend-icon="mdi-home" title="Home" value="home" to="/"></VListItem>
-      <!-- Navigasi DetailItem -->
-      <VListItem to="/DetailItem">Detail</VListItem>
+  <v-card>
+    <v-layout>
+      <v-navigation-drawer
+        expand-on-hover
+        rail
+      >
+        <v-list>
+          <v-list-item
+            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+            subtitle="sandra_a88@gmailcom"
+            title="Sandra Adams"
+          ></v-list-item>
+        </v-list>
 
-      <VListItem prepend-icon="mdi-cart" title="Cart" value="cart">
-        {{ totalQty }}</VListItem>
-      <VListItem
-        prepend-icon="mdi-history"
-        title="Order History"
-        value="history"
-        href="#order-history-section"
-      ></VListItem>
-    </VList>
-  </v-navigation-drawer>
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
+          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <v-main style="height: 250px"></v-main>
+    </v-layout>
+  </v-card>
 </template>
 
 <script setup>

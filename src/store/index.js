@@ -50,13 +50,10 @@ const store = createStore({
         
         async placeOrder({ commit, state }) {
             try {
-                // Buat format tanggal dan waktu saat ini
+                
                 const now = moment().format("YYYYMMDD");
-                // Tambahkan tiga digit angka random
                 const randomNumbers = Math.floor(Math.random() * 1000) + 1;
-                // Gabungkan tanggal, waktu, dan angka random
                 const orderNumber = `${now}-${randomNumbers}`;
-                // Dapatkan item-item yang ada di keranjang dengan jumlah > 0
                 const orderItems = state.cart.filter((item) => item.qty > 0).map((item) => ({
                     id: item.id,
                     title: item.title,
@@ -80,6 +77,26 @@ const store = createStore({
                 console.error('Error placing order:', error);
             }
         },
+        async deleteOrder({ commit, state }, orderNumber) {
+            try {
+                const orderIndex = state.orderHistory.findIndex((order) => order.orderNumber === orderNumber);
+                if (orderIndex !== -1) {
+                    state.orderHistory.splice(orderIndex, 1);
+                    localStorage.setItem('orderHistory', JSON.stringify(state.orderHistory));
+                    commit('saveOrderToHistory', state.orderHistory);
+                }
+                if(orderIndex === 0)
+                {
+                    localStorage.removeItem('orderHistory');
+                    commit('emptyOrderHistory', state.orderHistory);
+                }
+                
+    
+            } catch (error) {
+                console.error('Error deleting order:', error);
+
+            }
+        },
         async searchProducts({ commit }, query) {
             try {
                 const response = await axios.get(`https://dummyjson.com/products/search?q=${query}`);
@@ -87,10 +104,6 @@ const store = createStore({
             } catch (error) {
                 console.error('Error searching products:', error);
             }
-        },
-        async checkout({ commit }) {
-            commit('emptyCart');
-            commit('', true);
         },
         addItemToCart({ commit }, item) {
             commit("addToCart", item);
@@ -107,6 +120,9 @@ const store = createStore({
         emptyCart({ commit }) {
             commit("emptyCart");
         },
+        emptyOrderHistory({ commit }) {
+            commit("emptyOrderHistory");
+        }
     },
     // mutation gunanya miripdg useeffect di react, buat merubah state (nilainya ganti2)
     mutations: {
@@ -131,6 +147,14 @@ const store = createStore({
                 productInCart.qty++;
             }
         },
+        deleteOrder(state, orderNumber) {
+            
+            state.orderHistory = state.orderHistory.filter((order) => order.orderNumber !== orderNumber);
+            //cek jika orderHistorynya kosong maka akan langsung hapus
+            if(state.orderHistory.length === 0){
+                localStorage.removeItem('orderHistory');
+            }
+        },
         removeFromCart(state, id) {
             state.cart = state.cart.filter((item) => item.id !== id);
         },
@@ -149,6 +173,10 @@ const store = createStore({
         //kl abis checkout keranjangnya nu;;
         emptyCart(state) {
             state.cart = [];
+        },
+        emptyOrderHistory(state) {
+            state.orderHistory = [];
+            localStorage.removeItem('orderHistory');
         },
         saveOrderToHistory(state, order) {
             state.orderHistory.push(order);

@@ -2,7 +2,7 @@
   <div>
     <v-text-field
       v-model="searchQuery"
-      class="search-item"
+      class="search-item "
       label="Search"
       @input="handleSearch"
       append-icon="mdi-magnify"
@@ -17,12 +17,13 @@
     <v-row>
       <v-col
         v-for="(item, index) in paginatedItems"
-        :key="index"
+        :key="index" 
         cols="12"
         sm="6"
         md="4"
         lg="3"
       >
+      
         <v-card class="mx-auto" max-width="250" max-height="320">
           <v-img
             :src="item.thumbnail"
@@ -30,7 +31,6 @@
             width="250"
             height="120"
           ></v-img>
-          <!-- Gunakan v-if untuk menampilkan v-text-field saat produk dalam mode edit -->
           <v-text-field
             v-if="item.editMode"
             v-model="item.title"
@@ -39,7 +39,6 @@
             dense
             @keyup.enter="saveProductChanges(item)"
           ></v-text-field>
-          <!-- Gunakan v-else untuk menampilkan judul produk saat ini -->
           <v-card-title v-else @click="toggleEditMode(item)">
             {{ item.title }}
           </v-card-title>
@@ -105,7 +104,8 @@ export default {
         return this.products.filter(
           (product) => product.category === this.selectedCategory
         );
-      } else {
+      }
+      else {
         return this.products;
       }
     },
@@ -143,5 +143,8 @@ export default {
 }
 .search-item {
   margin-bottom: 20px;
+}
+.serch-input {
+  background-color: #ECB159;
 }
 </style>
